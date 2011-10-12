@@ -1,0 +1,5 @@
+InstrumentPoint: AgentInitialization
+
+SetFlag: ThreadTracing
+TurnOn: ThreadTracing
+SubstituteClassIfFlagged: ThreadTracing  java.lang.Thread  com.wily.introscope.agent.probe.lang.ManagedThread

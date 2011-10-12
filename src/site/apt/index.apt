@@ -1,0 +1,77 @@
+Large Interval Counter Tracer
+
+    This is a CA-Wily Introscope Agent extension that is similar to the standard PerIntervalCounter tracer-type,
+    that counts the number of invocations per 15 seconds, but this one handles large intervals in minutes and hours.
+
+* Requirements
+
+    This Java library is an agent-side plug-in for CA-Wily Introscope. Introscope is a commercial tool for
+    application performance management (APM) of (large) Java applications in production. In order to use
+    and/or compile this library you need to have a valid Introscope license. For compilation, a valid Agent.jar
+    file is required as well. You will need to manually install this JAR file into your local Maven cache,
+    using the instructions in the POM file of this project.
+
+    This library has been developed and tested using Introscope version 8.
+
+Installation
+
+    [[1]] Unpack the distribution ZIP (e.g. <<<LargeIntervalCounterTracer-1.1-bin.zip>>>) file.
+
+    [[2]] Drop the tracer JAR file (e.g. <<<LargeIntervalCounterTracer-1.1.jar>>>) into the <<<ext/>>> directory
+    of an Introscope Agent installation.
+
+    [[3]] Next, copy the LargeIntervalCounterTracer.pbd file into the Introscope Agent installation directory
+    and add the PBD file to the directives list in the Agent's profile. Finally, review the settings in the PBD file.
+
+
+Configuration
+
+    Configuration of the tracer is perform in it's PBD file. Here is an example
+
++----
+SetTracerClassMapping:  LargeInterval_30s com.ribomation.large_interval_counter.LargeIntervalCounterTracer com.wily.introscope.probebuilder.validate.ResourceNameValidator
+SetTracerOrdering:      LargeInterval_30s                    -1000
+SetTracerParameter:     LargeInterval_30s interval           "30s"           # Half minute. Possible suffixes: h=hour, m=minute, s=second. Default: 1m
+SetTracerParameter:     LargeInterval_30s metricPattern      "Calls / {0}"   # Metric name to the right of ':'. The unit will be patched in to {0}
+
+SetTracerClassMapping:  LargeInterval_1m com.ribomation.large_interval_counter.LargeIntervalCounterTracer com.wily.introscope.probebuilder.validate.ResourceNameValidator
+SetTracerParameter:     LargeInterval_1m interval           "1m"
+
+SetTracerClassMapping:  LargeInterval_5m com.ribomation.large_interval_counter.LargeIntervalCounterTracer com.wily.introscope.probebuilder.validate.ResourceNameValidator
+SetTracerParameter:     LargeInterval_5m interval           "5m"
+
+#TraceOneMethodOfClass: <class> <method> <Tracer> "<Resource:Metric>"
+TraceOneMethodOfClass: test.Application    doit    LargeInterval_30s    "Large Interval Counter|{packagename}|{classname}|{method}|30s"
+TraceOneMethodOfClass: test.Application    doit    LargeInterval_1m     "Large Interval Counter|{packagename}|{classname}|{method}|1m"
+TraceOneMethodOfClass: test.Application    doit    LargeInterval_5m     "Large Interval Counter|{packagename}|{classname}|{method}|5m"
++----
+
+* Configuration of tracer
+
+    A tracer (type) can be configured with properties listed below.
+
+*----+----+----+
+| <<Name>> | <<Default>> | <<Description>> |
+*----+----+----+
+| interval | 1m | Length of counting interval. Possible suffixes: h=hour, m=minute, s=second. No suffix means milli seconds.
+*----+----+----+
+| metricPattern | Calls / \{0\} | Metric name to the right of ':'. The unit value and type will be patched in to \{0\}.
+*----+----+----+
+| pulsInterval | 7500 | Number of milli seconds between each metric report. The default value is twice per 15s.
+*----+----+----+
+
+Tracer in action
+
+[img/periodic.png]
+
+[img/random.png]
+
+Author
+
+*-----------+--------------------------------------------------------------------+
+|| Name     | Jens Riboe                                                         |
+*-----------+--------------------------------------------------------------------+
+|| Email    | {{{mailto:jens.riboe@ribomation.com}jens.riboe@ribomation.com}}    |
+*-----------+--------------------------------------------------------------------+
+|| Web      | {{http://blog.ribomation.com/introscope/}}                         |
+*-----------+--------------------------------------------------------------------+

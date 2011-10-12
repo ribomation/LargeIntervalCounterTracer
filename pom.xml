@@ -1,0 +1,201 @@
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ================================================= -->
+    <!-- INFO -->
+    <!-- ================================================= -->
+    <name>Large IntervalCounter Tracer</name>
+    <description>
+        Generalized "per Interval Counter" where one can specify the interval width.
+    </description>
+    <url>http://www.blog.ribomation.com/introscope/large-interval-counter</url>
+    <inceptionYear>2006</inceptionYear>
+
+    
+    <!-- ================================================= -->
+    <!-- MAVEN ID -->
+    <!-- ================================================= -->
+    <groupId>ribomation</groupId>
+    <artifactId>LargeIntervalCounterTracer</artifactId>
+    <version>1.2</version>
+    <packaging>jar</packaging>
+
+    
+    <!-- ================================================= -->
+    <!-- DEVELOPERS -->
+    <!-- ================================================= -->
+    <developers>
+        <developer>
+            <id>jens</id>
+            <name>Jens Riboe</name>
+            <email>jens.riboe@ribomation.com</email>
+            <url>http://blog.ribomation.com/</url>
+            <organization>Ribomation</organization>
+            <organizationUrl>http://www.ribomation.com/</organizationUrl>
+            <roles>
+                <role>CA-Wily Consultant</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
+
+
+    <!-- ================================================= -->
+    <!-- DEPENDENCIES -->
+    <!-- ================================================= -->
+    <dependencies>
+        <!--
+        THIS ARTIFACT MUST BE MANUALLY INSTALLED INTO YOUR LOCAL MAVEN CACHE.
+        Run the following command
+        mvn install:install-file -DgroupId=introscope -DartifactId=agent -Dversion=8.x -Dpackaging=jar -Dfile=/path/to/Agent.jar
+        -->
+        <dependency>
+            <groupId>introscope</groupId>
+            <artifactId>agent</artifactId>
+            <version>8.x</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    
+    <!-- ================================================= -->
+    <!-- URLs -->
+    <!-- ================================================= -->
+    <scm>
+        <url>https://github.com/ribomation/${project.artifactId}</url>
+        <connection>scm:git@github.com:ribomation/${project.artifactId}.git</connection>
+        <developerConnection>scm:git@github.com:ribomation/${project.artifactId}.git</developerConnection>
+    </scm>
+    <distributionManagement>
+        <site>
+            <id>ribomation</id>
+            <url>scp://lib.ribomation.com/docs/${project.name}/</url>
+        </site>
+    </distributionManagement>
+
+
+    <!-- ================================================= -->
+    <!-- BUILD -->
+    <!-- ================================================= -->
+    <properties>
+        <javaVersion>1.5</javaVersion>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <compilerVersion>${javaVersion}</compilerVersion>
+                    <source>${javaVersion}</source>
+                    <target>${javaVersion}</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <com-wily-Name>${pom.name}</com-wily-Name>
+                            <com-wily-Release>7.0</com-wily-Release>
+                            <com-wily-Build>202011</com-wily-Build>
+
+                            <com-wily-Extension-Name>${pom.name}</com-wily-Extension-Name>
+                            <com-wily-Extension-Type>Introscope-Agent</com-wily-Extension-Type>
+                            <com-wily-Extension-Version>1</com-wily-Extension-Version>
+                            <com-wily-Extension-Plugins-List>p</com-wily-Extension-Plugins-List>
+
+                            <com-wily-Extension-Plugin-p-Name>${pom.name}</com-wily-Extension-Plugin-p-Name>
+                            <com-wily-Extension-Plugin-p-Type>tracer</com-wily-Extension-Plugin-p-Type>
+                            <com-wily-Extension-Plugin-p-Version>1</com-wily-Extension-Plugin-p-Version>
+                            <com-wily-Extension-Plugin-p-Entry-Point-Class>com.ribomation.large_interval_counter.LargeIntervalCounterTracer</com-wily-Extension-Plugin-p-Entry-Point-Class>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.2.1</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/bin.xml</descriptor>
+                        <descriptor>src/assembly/doc.xml</descriptor>
+                        <descriptor>src/assembly/src.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.0</version>
+                <configuration>
+                    <finalName>${project.name}-${project.version}</finalName>
+                    <reportPlugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-project-info-reports-plugin</artifactId>
+                            <version>2.4</version>
+                            <reportSets>
+                                <reportSet>
+                                    <reports>
+                                        <report>summary</report>
+                                        <report>project-team</report>
+                                        <report>dependencies</report>
+                                        <report>plugins</report>
+                                        <report>scm</report>
+                                    </reports>
+                                </reportSet>
+                            </reportSets>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-javadoc-plugin</artifactId>
+                            <version>2.8</version>
+                            <configuration>
+                                <aggregate>true</aggregate>
+                                <links>
+                                    <link>http://download.oracle.com/javase/1.5.0/docs/api/</link>
+                                </links>
+                            </configuration>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-jxr-plugin</artifactId>
+                            <version>2.3</version>
+                        </plugin>
+
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-surefire-report-plugin</artifactId>
+                            <version>2.9</version>
+                        </plugin>
+                    </reportPlugins>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
+

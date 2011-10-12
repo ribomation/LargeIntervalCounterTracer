@@ -1,0 +1,14 @@
+
+SetTracerClassMapping:  LICT_1m com.ribomation.large_interval_counter.LargeIntervalCounterTracer com.wily.introscope.probebuilder.validate.ResourceNameValidator
+SetTracerParameter:     LICT_1m interval           "1m"
+
+SetTracerClassMapping:  LICT_5m com.ribomation.large_interval_counter.LargeIntervalCounterTracer com.wily.introscope.probebuilder.validate.ResourceNameValidator
+SetTracerParameter:     LICT_5m interval           "5m"
+
+TraceOneMethodOfClass: test.Random    doit    LICT_1m     "Large Interval Counter|{packagename}|{classname}|{method}"
+TraceOneMethodOfClass: test.Random    doit    LICT_5m     "Large Interval Counter|{packagename}|{classname}|{method}"
+TraceOneMethodOfClass: test.Random    doit    PerIntervalCounter     "Large Interval Counter|{packagename}|{classname}|{method}:Calls / 15s"
+
+TraceOneMethodOfClass: test.Periodic    doit    LICT_1m     "Large Interval Counter|{packagename}|{classname}|{method}"
+TraceOneMethodOfClass: test.Periodic    doit    LICT_5m     "Large Interval Counter|{packagename}|{classname}|{method}"
+TraceOneMethodOfClass: test.Periodic    doit    PerIntervalCounter     "Large Interval Counter|{packagename}|{classname}|{method}:Calls / 15s"

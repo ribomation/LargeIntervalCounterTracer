@@ -1,0 +1,21 @@
+#########################################################################
+#   LargeIntervalCounterTracer
+#
+#   Author: Jens Riboe, Ribomation
+#########################################################################
+
+SetTracerClassMapping:  LargeInterval_30s com.ribomation.large_interval_counter.LargeIntervalCounterTracer com.wily.introscope.probebuilder.validate.ResourceNameValidator
+SetTracerOrdering:      LargeInterval_30s                    -1000
+SetTracerParameter:     LargeInterval_30s interval           "30s"           # Half minute. Possible suffixes: h=hour, m=minute, s=second. Default: 1m
+SetTracerParameter:     LargeInterval_30s metricPattern      "Calls / {0}"   # Metric name to the right of ':'. The unit will be patched in to {0}
+
+SetTracerClassMapping:  LargeInterval_1m com.ribomation.large_interval_counter.LargeIntervalCounterTracer com.wily.introscope.probebuilder.validate.ResourceNameValidator
+SetTracerParameter:     LargeInterval_1m interval           "1m"
+
+SetTracerClassMapping:  LargeInterval_5m com.ribomation.large_interval_counter.LargeIntervalCounterTracer com.wily.introscope.probebuilder.validate.ResourceNameValidator
+SetTracerParameter:     LargeInterval_5m interval           "5m"
+
+#TraceOneMethodOfClass: <class> <method> <Tracer> "<Resource:Metric>"
+TraceOneMethodOfClass: test.Application    doit    LargeInterval_30s    "Large Interval Counter|{packagename}|{classname}|{method}|30s"
+TraceOneMethodOfClass: test.Application    doit    LargeInterval_1m     "Large Interval Counter|{packagename}|{classname}|{method}|1m"
+TraceOneMethodOfClass: test.Application    doit    LargeInterval_5m     "Large Interval Counter|{packagename}|{classname}|{method}|5m"
