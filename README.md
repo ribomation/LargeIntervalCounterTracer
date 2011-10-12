@@ -18,9 +18,9 @@ This library has been developed and tested using Introscope version 8.
 Installation
 ============
 
-* Unpack the distribution ZIP (e.g. <<<LargeIntervalCounterTracer-1.1-bin.zip>>>) file.
+* Unpack the distribution ZIP (e.g. LargeIntervalCounterTracer-1.2-bin.zip) file.
 
-* Drop the tracer JAR file (e.g. <<<LargeIntervalCounterTracer-1.1.jar>>>) into the <<<ext/>>> directory
+* Drop the tracer JAR file (e.g. LargeIntervalCounterTracer-1.2.jar) into the ext/ directory
   of an Introscope Agent installation.
 
 * Next, copy the LargeIntervalCounterTracer.pbd file into the Introscope Agent installation directory
